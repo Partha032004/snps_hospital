@@ -1,3 +1,10 @@
+const API_URL = "https://snps-hospital.onrender.com";
+
+fetch(`${API_URL}/api/endpoint/`)
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error("Error:", error));
+
 // Counter Animation
 const counters = document.querySelectorAll('.count');
 const speed = 200; // Adjust this speed for faster/slower animation
