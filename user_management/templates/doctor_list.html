@@ -1,0 +1,19 @@
+<!-- user_management/templates/user_management/doctor_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Doctors</title>
+</head>
+<body>
+    <h1>Doctors List</h1>
+    <ul>
+        {% for doctor in doctors %}
+            <li>{{ doctor.username }} - {{ doctor.get_role_display }}</li>
+        {% empty %}
+            <li>No doctors available.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_user' %}">Add New User</a>
+</body>
+</html>

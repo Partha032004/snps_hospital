@@ -1,0 +1,7 @@
+<!-- user_management/templates/user_management/add_user.html -->
+<h2>Add New User</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- This will render the form fields: username and role -->
+    <button type="submit">Add User</button>
+</form>

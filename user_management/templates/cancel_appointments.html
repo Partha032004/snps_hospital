@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel an Appointment - SPNS Hospital</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-size: 16px;
+            color: #00796b;
+            text-align: left;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+        input[type="text"]:focus {
+            border-color: #00796b;
+            outline: none;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #004d40;
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #004d40;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Cancel an Appointment</h1>
+</header>
+
+<div class="container">
+    <form id="cancelForm">
+        <div class="form-group">
+            <label for="patientName">Patient Name</label>
+            <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" required>
+        </div>
+
+        <input type="submit" value="Cancel Appointment">
+    </form>
+
+    <a href="patient_dashboard.html" class="button">Back to Dashboard</a>
+</div>
+
+<script>
+    document.getElementById('cancelForm').onsubmit = function(e) {
+        e.preventDefault(); // Prevents form from submitting normally
+
+        // Get the patient name from the form
+        const patientName = document.getElementById('patientName').value;
+
+        // Retrieve existing appointments from localStorage
+        let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+        // Find the appointment by patient name
+        const appointmentIndex = appointments.findIndex(app => app.patientName.toLowerCase() === patientName.toLowerCase());
+
+        if (appointmentIndex !== -1) {
+            // Update the appointment status to "Cancelled"
+            appointments[appointmentIndex].status = "Cancelled";
+
+            // Save the updated appointments list back to localStorage
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+
+            // Provide feedback to the user
+            alert('Appointment cancelled successfully!');
+        } else {
+            alert('Appointment not found!');
+        }
+
+        // Redirect to patient dashboard
+        window.location.href = 'patient_dashboard.html'; // Replace with the actual dashboard URL
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Website</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'user_management/css/style.css' %}">
+    <style>
+        
+        #snps{
+            position: absolute;
+            top: 20px;
+            left: 450px;
+            font-weight: 800;
+            background-color: rgb(195, 195, 195);
+            color: rgb(70, 151, 243);
+        }
+    </style>
+    
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{% static 'user_management/images/logo.png' %}" alt="Logo">
+                <h1 id="snps">SNPS HOSPITAL</h1>
+
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1>Welcome to Our Hospital</h1>
+        <p>Your health is our priority.</p>
+        <button class="choose-user" onclick="window.location.href='roles.html'">Choose User</button>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="service-cards">
+            <div class="card">
+                <i class="fas fa-stethoscope"></i>
+                <h3>Cardiology</h3>
+                <p>High-quality heart care services.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-brain"></i>
+                <h3>Neurology</h3>
+                <p>Advanced neurological treatments.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-x-ray"></i>
+                <h3>Radiology</h3>
+                <p>Comprehensive diagnostic imaging.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2>About Us</h2>
+        <p>At SNPS HOSPITAL, we are committed to providing high-quality healthcare services with compassion and
+            care. Our team of experienced doctors, nurses, and healthcare professionals work tirelessly to ensure the
+            well-being of every patient. We offer a wide range of medical services, from routine check-ups to
+            specialized treatments, using the latest technology and innovative approaches. Our patient-first philosophy
+            means that we treat every individual with the respect and attention they deserve. We aim to be your trusted
+            healthcare partner, delivering comprehensive care and support for a healthier, happier future.</p>
+    </section>
+
+
+
+    <!-- Health Tips Section -->
+    <section id="health-tips" class="health-tips">
+        <h2>Health Tips</h2>
+        <div class="tips-container">
+            <div class="tip">
+                <img src="{% static 'user_management/images/tea.jpg' %}" alt="Herbal Tea for Monsoon">
+                
+                <h3>Tea for Monsoon Blues</h3>
+                <p>Drink herbal tea to combat monsoon diseases. Herbal tea has curative properties for coughs, colds,
+                    and sore throat...</p>
+                <a href="https://harrisonsteatown.com/blog/benefits-of-drinking-tea-during-the-monsoon/#:~:text=Rainy%20days%20can%20sometimes%20bring,ritual%20that%20brightens%20your%20day." class="read-more">Read More</a>
+            </div>
+            <div class="tip">
+                <img src="" alt="">
+                <img src="{% static 'user_management/images/dates.jpg' %}" alt="Benefits of Dates">
+                <h3>Benefits of Dates</h3>
+                <p>Dates are one of the very best sweet and versatile foods that can regulate the digestive process...
+                </p>
+                <a href="https://www.carehospitals.com/blog-detail/benefits-of-dates/" class="read-more">Read More</a>
+            </div>
+            <div class="tip">
+                
+                <img src="{% static 'user_management/images/lychee.jpg' %}" alt="Benefits of Lychee">
+                
+                <h3>Benefits of Lychee</h3>
+                <p>Lychee is a wonderful fruit with a wealth of health benefits, including its ability to boost the
+                    immune system, improve digestion, build strong...</p>
+                <a href="https://www.healthline.com/nutrition/foods/lychees" class="read-more">Read More</a>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
+
+    <!-- Counters Section -->
+    <section id="stats" class="stats">
+        <div class="counter">
+            <h3><span class="count" data-target="800">0</span>+</h3>
+            <p>Doctors</p>
+        </div>
+        <div class="counter">
+            <h3><span class="count" data-target="375">0</span>+</h3>
+            <p>Nurses</p>
+        </div>
+        <div class="counter">
+            <h3><span class="count" data-target="200">0</span>+</h3>
+            <p>Beds</p>
+        </div>
+        <div class="counter">
+            <h3><span class="count" data-target="6000000">0</span>+</h3>
+            <p>Happy Patients</p>
+        </div>
+    </section>
+
+
+
+
+    <!-- Helpline Section -->
+    <section id="helpline" class="helpline">
+        <div class="helpline-content">
+            <h2>24/7 Helpline</h2>
+            <p>Call us anytime, day or night. We're here to help.</p>
+            <div class="contact-info">
+                <p><strong>Helpline Number:</strong> <a href="tel:+18001234567">+1 800 123 4567</a></p>
+                <p><strong>Email:</strong> <a href="mailto:support@hospital.com">support@hospital.com</a></p>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Hospital Website. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <script src="{% static 'user_management/js/script.js' %}"></script>
+</body>
+
+</html>

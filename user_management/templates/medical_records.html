@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Medical Records - SPNS Hospital</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        label, p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>View Medical Records</h1>
+</header>
+
+<div class="container">
+    <label for="patient_id">Enter Patient ID to View Records</label>
+    <input type="text" id="patient_id" name="patient_id" required>
+
+    <button onclick="viewMedicalHistory()">View Medical History</button>
+
+    <div id="medicalHistoryContainer">
+        <!-- Medical history will be displayed here -->
+    </div>
+    <a href="patient_dashboard.html" class="button">Back to Dashboard</a>
+</div>
+
+<script>
+    function viewMedicalHistory() {
+        const patientId = document.getElementById("patient_id").value;
+        const patientData = JSON.parse(localStorage.getItem(`patient_${patientId}`));
+
+        const medicalHistoryContainer = document.getElementById("medicalHistoryContainer");
+        medicalHistoryContainer.innerHTML = ''; // Clear previous data
+
+        if (patientData) {
+            medicalHistoryContainer.innerHTML = `
+                <h3>Medical History of ${patientData.name}</h3>
+                <p><strong>Patient ID:</strong> ${patientData.patientId}</p>
+                <p><strong>Address:</strong> ${patientData.address}</p>
+                <p><strong>Contact:</strong> ${patientData.contact}</p>
+                <p><strong>Date of Birth:</strong> ${patientData.dob}</p>
+                <p><strong>Gender:</strong> ${patientData.gender}</p>
+                <p><strong>Medical History:</strong> ${patientData.medicalHistory}</p>
+            `;
+        } else {
+            medicalHistoryContainer.innerHTML = `<p>No medical history found for Patient ID: ${patientId}</p>`;
+        }
+    }
+</script>
+
+</body>
+</html>

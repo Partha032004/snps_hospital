@@ -1,0 +1,6 @@
+<!-- user_management/templates/user_management/remove_user.html -->
+<h2>Are you sure you want to remove {{ user.username }}?</h2>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">Yes, Remove</button>
+</form>

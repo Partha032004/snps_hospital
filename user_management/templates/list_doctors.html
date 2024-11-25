@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Doctors - SPNS Hospital</title>
+    <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(to right, #00C9FF, #92FE9D);
+                margin: 0;
+                padding: 0;
+                color: #333;
+                text-align: center;
+            }
+            header {
+                background-color: #00796b;
+                color: white;
+                padding: 20px 0;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            }
+            h1 {
+                margin: 0;
+                font-size: 36px;
+            }
+            .container {
+                width: 80%;
+                max-width: 800px;
+                margin: 50px auto;
+                background-color: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            th, td {
+                border: 1px solid #ccc;
+                padding: 10px;
+                text-align: left;
+            }
+            th {
+                background-color: #00796b;
+                color: white;
+            }
+            .button {
+                background-color: #00796b;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                text-decoration: none;
+                font-size: 16px;
+                margin-top: 20px;
+                display: inline-block;
+            }
+            .button:hover {
+                background-color: #004d40;
+            }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>List of Doctors</h1>
+</header>
+
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Specialization</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+        <tbody id="doctorList">
+            <!-- Doctors list will be populated here -->
+        </tbody>
+    </table>
+    <a href="patient_dashboard.html" class="button">Back to Dashboard</a>
+</div>
+
+<script>
+    // Retrieve the doctors list from localStorage or initialize as an empty array
+    let doctorList = JSON.parse(localStorage.getItem('doctors')) || [];
+    
+    // Function to update the displayed list of doctors
+    function updateDoctorList() {
+        const doctorListContainer = document.getElementById('doctorList');
+        doctorListContainer.innerHTML = ''; // Clear existing list
+
+        // Check if the doctorList is empty
+        if (doctorList.length === 0) {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 3;
+            cell.textContent = 'No doctors available.';
+            row.appendChild(cell);
+            doctorListContainer.appendChild(row);
+            return;
+        }
+
+        // Iterate through the doctor list to create table rows
+        doctorList.forEach(doctor => {
+            const row = document.createElement('tr');
+            
+            const nameCell = document.createElement('td');
+            nameCell.textContent = doctor.username || 'N/A';  
+            row.appendChild(nameCell);
+            
+            const specializationCell = document.createElement('td');
+            specializationCell.textContent = doctor.specialization || 'N/A';  
+            row.appendChild(specializationCell);
+            
+            const contactCell = document.createElement('td');
+            contactCell.textContent = doctor.contact || 'N/A';  
+            row.appendChild(contactCell);
+            
+            doctorListContainer.appendChild(row);
+        });
+    }
+
+    // Call the function to update the list when the page loads
+    window.onload = function() {
+        updateDoctorList();
+    }
+</script>
+
+</body>
+</html>

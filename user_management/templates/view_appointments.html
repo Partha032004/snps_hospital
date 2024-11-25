@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Appointments - SPNS Hospital</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #00796b;
+            text-align: left;
+        }
+        th {
+            background-color: #00796b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>View Appointments</h1>
+</header>
+
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="appointmentsTable">
+            <!-- Appointment data will be inserted here -->
+        </tbody>
+    </table>
+    <a href="doctor_dashboard.html" class="button">Back to Dashboard</a>
+</div>
+
+<script>
+    // Function to display saved appointments
+    function displayAppointments() {
+        // Retrieve appointments from localStorage
+        const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+        // Get the table body element where appointments will be displayed
+        const appointmentsTable = document.getElementById('appointmentsTable');
+
+        // Clear any existing rows
+        appointmentsTable.innerHTML = '';
+
+        // Check if there are any appointments
+        if (appointments.length === 0) {
+            const noAppointmentsRow = document.createElement('tr');
+            noAppointmentsRow.innerHTML = `<td colspan="5">No appointments available</td>`;
+            appointmentsTable.appendChild(noAppointmentsRow);
+        } else {
+            // Populate the table with appointment data
+            appointments.forEach(appointment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${appointment.patientName}</td>
+                    <td>${appointment.doctorName}</td>
+                    <td>${appointment.appointmentDate}</td>
+                    <td>${appointment.appointmentTime}</td>
+                    <td>${appointment.status}</td>
+                `;
+                appointmentsTable.appendChild(row);
+            });
+        }
+    }
+
+    // Call the function when the page loads
+    window.onload = displayAppointments;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Patient Status - SPNS Hospital</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        label, input, textarea, input[type="submit"] {
+            display: block;
+            margin: 15px auto;
+            font-size: 16px;
+            width: 90%;
+            max-width: 500px;
+        }
+        input, textarea {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #00796b;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Update Patient Status</h1>
+</header>
+
+<div class="container">
+    <form id="updateStatusForm">
+        <label for="patient_id">Patient ID</label>
+        <input type="text" id="patient_id" name="patient_id" required>
+
+        <label for="status_update">Status Update Details</label>
+        <textarea id="status_update" name="status_update" rows="4" required></textarea>
+
+        <input type="submit" value="Update Status">
+        <a href="doctor_dashboard.html" class="button">Back to Dashboard</a>
+    </form>
+</div>
+
+<script>
+    // Event listener for form submission
+    document.getElementById("updateStatusForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission to server
+
+        // Get values from the form
+        const patientId = document.getElementById("patient_id").value;
+        const statusUpdate = document.getElementById("status_update").value;
+
+        // Retrieve patient data from localStorage
+        const patientData = JSON.parse(localStorage.getItem(`patient_${patientId}`));
+
+        if (patientData) {
+            // If medical history exists, append the new status update to it
+            patientData.medicalHistory = patientData.medicalHistory || "";  // Ensure it's defined
+            patientData.medicalHistory += `\nStatus Update: ${statusUpdate}`;
+
+            // Save the updated data back to localStorage
+            localStorage.setItem(`patient_${patientId}`, JSON.stringify(patientData));
+
+            // Provide feedback to the user
+            alert("Patient status updated successfully!");
+        } else {
+            alert("Patient not found. Please check the Patient ID.");
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Appointment - SPNS Hospital</title>
+    <style>
+        /* Same styling as before */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        label, input, select {
+            display: block;
+            margin: 15px auto;
+            font-size: 16px;
+            width: 90%;
+            max-width: 500px;
+        }
+        input, select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #00796b;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Make an Appointment</h1>
+</header>
+
+<div class="container">
+    <form id="appointmentForm">
+        <label for="patient_name">Patient Name</label>
+        <input type="text" id="patient_name" name="patient_name" required>
+
+        <label for="doctor_name">Doctor</label>
+        <select id="doctor_name" name="doctor_name" required>
+            <!-- Doctor names will be dynamically inserted here -->
+        </select>
+
+        <label for="appointment_date">Date</label>
+        <input type="date" id="appointment_date" name="appointment_date" required>
+
+        <label for="appointment_time">Time</label>
+        <input type="time" id="appointment_time" name="appointment_time" required>
+
+        <input type="submit" value="Book Appointment">
+    </form>
+    <a href="patient_dashboard.html" class="button">Back to Dashboard</a>
+</div>
+
+<script>
+    // Function to set the minimum allowed date for the appointment
+    function setMinAppointmentDate() {
+        // Set today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+
+        // Set the minimum date for the appointment
+        document.getElementById('appointment_date').setAttribute('min', today);
+    }
+
+    // Function to populate doctor list in the dropdown
+    function populateDoctorList() {
+        const doctorSelect = document.getElementById('doctor_name');
+        
+        // Retrieve the list of doctors from localStorage
+        const doctorList = JSON.parse(localStorage.getItem('doctors')) || [];
+
+        // Clear any existing options
+        doctorSelect.innerHTML = '';
+
+        // Add default option
+        const defaultOption = document.createElement('option');
+        defaultOption.text = 'Select a Doctor';
+        doctorSelect.appendChild(defaultOption);
+
+        // Populate with doctors from localStorage
+        doctorList.forEach(doctor => {
+            const option = document.createElement('option');
+            option.value = doctor.username;
+            option.text = doctor.username; // Display doctor name
+            doctorSelect.appendChild(option);
+        });
+    }
+
+    // Function to handle appointment form submission
+    document.getElementById('appointmentForm').onsubmit = function(e) {
+        e.preventDefault(); // Prevents form from submitting normally
+
+        // Get form data
+        const patientName = document.getElementById('patient_name').value;
+        const doctorName = document.getElementById('doctor_name').value;
+        const appointmentDate = document.getElementById('appointment_date').value;
+        const appointmentTime = document.getElementById('appointment_time').value;
+
+        // Create an appointment object
+        const appointment = {
+            patientName: patientName,
+            doctorName: doctorName,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime,
+            status: 'Scheduled'
+        };
+
+        // Retrieve existing appointments from localStorage, or create an empty array if none exist
+        let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+        // Push the new appointment to the array
+        appointments.push(appointment);
+
+        // Save all appointments back to localStorage
+        localStorage.setItem('appointments', JSON.stringify(appointments));
+
+        // Optionally, alert the user and/or redirect
+        alert('Appointment booked successfully!');
+    };
+
+    // Call functions when the page is loaded
+    window.onload = function() {
+        setMinAppointmentDate(); // Set minimum date
+        populateDoctorList();    // Populate doctor list
+    };
+</script>
+
+</body>
+</html>

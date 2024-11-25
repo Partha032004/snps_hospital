@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Remove User - SPNS Hospital</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .button:hover {
+            background-color: #004d40;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        label, select, input[type="text"], input[type="submit"] {
+            display: block;
+            margin: 15px auto;
+            font-size: 16px;
+        }
+        input[type="text"], select {
+            padding: 10px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #00796b;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #004d40;
+        }
+        .user-list {
+            margin-top: 30px;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .user-list li {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+    <script>
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const role = document.getElementById('role').value;
+            const status = document.getElementById('status').value;
+            const specialization = document.getElementById('specialization').value;
+            const contact = document.getElementById('contact').value;
+
+            // Retrieve the current lists from localStorage
+            let doctorList = JSON.parse(localStorage.getItem('doctors')) || [];
+            let patientList = JSON.parse(localStorage.getItem('patients')) || [];
+            let staffList = JSON.parse(localStorage.getItem('staff')) || [];
+
+            // Handle adding/removing doctors
+            if (role === 'doctor') {
+                if (status === 'active') {
+                    // Add new doctor if status is "active"
+                    doctorList.push({
+                        username: username,
+                        role: role,
+                        specialization: specialization,
+                        contact: contact
+                    });
+                } else {
+                    // Remove doctor if status is "inactive"
+                    doctorList = doctorList.filter(doctor => doctor.username !== username);
+                }
+                localStorage.setItem('doctors', JSON.stringify(doctorList));
+            }
+
+            // Handle adding/removing patients
+            if (role === 'patient') {
+                if (status === 'active') {
+                    patientList.push({
+                        username: username,
+                        role: role
+                    });
+                } else {
+                    patientList = patientList.filter(patient => patient.username !== username);
+                }
+                localStorage.setItem('patients', JSON.stringify(patientList));
+            }
+
+            // Handle adding/removing staff (Registration Clerk, Billing Staff)
+            if (role === 'registration_clerk' || role === 'billing_staff') {
+                if (status === 'active') {
+                    staffList.push({
+                        username: username,
+                        role: role
+                    });
+                } else {
+                    staffList = staffList.filter(staff => staff.username !== username);
+                }
+                localStorage.setItem('staff', JSON.stringify(staffList));
+            }
+
+            // Refresh the lists on the page
+            updateDoctorList();
+            updatePatientList();
+            updateStaffList();
+        }
+
+        // Function to update the displayed list of doctors
+        function updateDoctorList() {
+            const doctorListContainer = document.getElementById('doctorList');
+            const doctorList = JSON.parse(localStorage.getItem('doctors')) || [];
+
+            doctorListContainer.innerHTML = ''; // Clear existing list
+
+            if (doctorList.length === 0) {
+                const message = document.createElement('p');
+                message.textContent = "No doctors available.";
+                doctorListContainer.appendChild(message);
+                return;
+            }
+
+            const ul = document.createElement('ul');
+            doctorList.forEach(doctor => {
+                const li = document.createElement('li');
+                li.textContent = `${doctor.username} (${doctor.role}) - Specialization: ${doctor.specialization}, Contact: ${doctor.contact}`;
+                ul.appendChild(li);
+            });
+
+            doctorListContainer.appendChild(ul);
+        }
+
+        // Function to update the displayed list of patients
+        function updatePatientList() {
+            const patientListContainer = document.getElementById('patientList');
+            const patientList = JSON.parse(localStorage.getItem('patients')) || [];
+
+            patientListContainer.innerHTML = ''; // Clear existing list
+
+            if (patientList.length === 0) {
+                const message = document.createElement('p');
+                message.textContent = "No patients available.";
+                patientListContainer.appendChild(message);
+                return;
+            }
+
+            const ul = document.createElement('ul');
+            patientList.forEach(patient => {
+                const li = document.createElement('li');
+                li.textContent = `${patient.username} (${patient.role})`;
+                ul.appendChild(li);
+            });
+
+            patientListContainer.appendChild(ul);
+        }
+
+        // Function to update the displayed list of staff (registration clerk and billing staff)
+        function updateStaffList() {
+            const staffListContainer = document.getElementById('staffList');
+            const staffList = JSON.parse(localStorage.getItem('staff')) || [];
+
+            staffListContainer.innerHTML = ''; // Clear existing list
+
+            if (staffList.length === 0) {
+                const message = document.createElement('p');
+                message.textContent = "No staff available.";
+                staffListContainer.appendChild(message);
+                return;
+            }
+
+            const ul = document.createElement('ul');
+            staffList.forEach(staff => {
+                const li = document.createElement('li');
+                li.textContent = `${staff.username} (${staff.role})`;
+                ul.appendChild(li);
+            });
+
+            staffListContainer.appendChild(ul);
+        }
+
+        // Function to show/hide specialization and contact fields based on role selection
+        function toggleDoctorFields() {
+            const role = document.getElementById('role').value;
+            const specializationField = document.getElementById('specializationField');
+            const contactField = document.getElementById('contactField');
+
+            if (role === 'doctor') {
+                specializationField.style.display = 'block';
+                contactField.style.display = 'block';
+            } else {
+                specializationField.style.display = 'none';
+                contactField.style.display = 'none';
+            }
+        }
+
+        // Call this function when the page is loaded to display the current lists
+        window.onload = function() {
+            updateDoctorList();
+            updatePatientList();
+            updateStaffList();
+            toggleDoctorFields(); // Hide specialization/contact fields by default for non-doctor roles
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>Add or Remove User</h1>
+</header>
+
+<div class="container">
+    <form onsubmit="handleSubmit(event)">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="role">Role</label>
+        <select id="role" name="role" required onchange="toggleDoctorFields()">
+            <option value="doctor">Doctor</option>
+            <option value="patient">Patient</option>
+            <option value="registration_clerk">Registration Clerk</option>
+            <option value="billing_staff">Billing Staff</option>
+        </select>
+
+        <div id="specializationField" style="display:none;">
+            <label for="specialization">Specialization</label>
+            <select id="specialization" name="specialization">
+                <option value="cardiologist">Cardiologist</option>
+                <option value="ophthalmologist">Ophthalmologist</option>
+                <option value="neurologist">Neurologist</option>
+                <option value="orthopedist">Orthopedist</option>
+                <!-- Add more specialties as needed -->
+            </select>
+        </div>
+
+        <div id="contactField" style="display:none;">
+            <label for="contact">Contact</label>
+            <input type="text" id="contact" name="contact">
+        </div>
+
+        <label for="status">Action</label>
+        <select id="status" name="status" required>
+            <option value="active">Activate User</option>
+            <option value="inactive">Deactivate User</option>
+        </select>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Display the list of doctors -->
+    <div class="user-list" id="doctorList">
+        <h3>List of Doctors</h3>
+    </div>
+
+    <!-- Display the list of patients -->
+    <div class="user-list" id="patientList">
+        <h3>List of Patients</h3>
+    </div>
+
+    <!-- Display the list of staff (registration clerk and billing staff) -->
+    <div class="user-list" id="staffList">
+        <h3>List of Staff</h3>
+    </div>
+<a href="admin_dashboard.html" class="button">Back to Dashboard</a>
+</div>
+
+</body>
+</html>

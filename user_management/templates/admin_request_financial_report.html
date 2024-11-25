@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Financial Report - SPNS Hospital</title>
+    <style>
+        /* Style from the previous update */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        label, input, select, input[type="submit"] {
+            display: block;
+            margin: 15px auto;
+            font-size: 16px;
+            width: 90%;
+            max-width: 500px;
+        }
+        input, select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #00796b;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #004d40;
+        }
+        .report-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e0f7fa;
+            border-radius: 10px;
+        }
+        .report-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .report-table th, .report-table td {
+            padding: 12px;
+            border: 1px solid #00796b;
+            text-align: left;
+        }
+        .report-table th {
+            background-color: #00796b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Request Financial Report</h1>
+</header>
+
+<div class="container">
+    <form id="reportForm">
+        <label for="bill_id">Bill ID</label>
+        <input type="text" id="bill_id" name="bill_id" required>
+
+        <input type="submit" value="Request Report">
+    </form>
+
+    <!-- Section for displaying the requested report -->
+    <div id="reportSection" class="report-section" style="display:none;">
+        <h2>Requested Financial Report</h2>
+        <p><strong>Bill ID:</strong> <span id="reportBillId"></span></p>
+
+        <table class="report-table" id="reportTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Income (INR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be populated dynamically here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById('reportForm').onsubmit = function(e) {
+        e.preventDefault();
+
+        const billId = document.getElementById('bill_id').value;
+
+        // Fetch payment data for the given Bill ID from localStorage
+        const payments = JSON.parse(localStorage.getItem('payments')) || [];
+        const filteredPayments = payments.filter(payment => payment.billId === billId);
+
+        if (filteredPayments.length > 0) {
+            // Show the report section
+            document.getElementById('reportSection').style.display = 'block';
+            document.getElementById('reportBillId').textContent = billId;
+
+            // Populate the table with filtered payment data
+            const reportTableBody = document.getElementById('reportTable').getElementsByTagName('tbody')[0];
+            reportTableBody.innerHTML = ''; // Clear previous data
+
+            filteredPayments.forEach(payment => {
+                const row = document.createElement('tr');
+                const dateCell = document.createElement('td');
+                const incomeCell = document.createElement('td');
+                dateCell.textContent = payment.date;
+                incomeCell.textContent = payment.income;  // Already in INR format
+                row.appendChild(dateCell);
+                row.appendChild(incomeCell);
+                reportTableBody.appendChild(row);
+            });
+        } else {
+            alert("No payments found for the provided Bill ID.");
+        }
+    };
+</script>
+<a href="admin_dashboard.html" class="button">Back to Dashboard</a>
+</body>
+</html>

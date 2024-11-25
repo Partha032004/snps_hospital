@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Availability Management - SPNS Hospital</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+        }
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .button {
+            background-color: #00796b;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        label, input, select, input[type="submit"] {
+            display: block;
+            margin: 15px auto;
+            font-size: 16px;
+            width: 90%;
+            max-width: 500px;
+        }
+        input, select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #00796b;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #004d40;
+        }
+        .availability-result {
+            margin-top: 30px;
+            font-size: 18px;
+            padding: 20px;
+            background-color: #e0f7fa;
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Manage Availability</h1>
+</header>
+
+<div class="container">
+    <form id="availabilityForm">
+        <label for="doctor_id">Doctor ID</label>
+        <input type="text" id="doctor_id" name="doctor_id" required>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time_slot">Available Time Slot</label>
+        <input type="text" id="time_slot" name="time_slot" required placeholder="e.g., 09:00 AM - 10:00 AM">
+
+        <input type="submit" value="Update Availability">
+    </form>
+    <a href="doctor_dashboard.html" class="button">Back to Dashboard</a>
+</div>
+
+<script>
+    // Function to handle availability update
+    document.getElementById('availabilityForm').onsubmit = function(event) {
+        event.preventDefault();
+
+        const doctorId = document.getElementById('doctor_id').value;
+        const date = document.getElementById('date').value;
+        const timeSlot = document.getElementById('time_slot').value;
+
+        // Retrieve existing availability from localStorage or initialize a new object
+        let availabilityData = JSON.parse(localStorage.getItem('doctorAvailability')) || {};
+
+        // Initialize doctor entry if it doesn’t exist
+        if (!availabilityData[doctorId]) {
+            availabilityData[doctorId] = {};
+        }
+
+        // Add or update the date with the new time slot
+        if (!availabilityData[doctorId][date]) {
+            availabilityData[doctorId][date] = [];
+        }
+
+        if (!availabilityData[doctorId][date].includes(timeSlot)) {
+            availabilityData[doctorId][date].push(timeSlot);
+        }
+
+        // Save updated availability to localStorage
+        localStorage.setItem('doctorAvailability', JSON.stringify(availabilityData));
+
+        alert('Availability updated successfully!');
+        document.getElementById('availabilityForm').reset();
+    };
+</script>
+
+</body>
+</html>
