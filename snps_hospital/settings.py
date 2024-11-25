@@ -169,3 +169,11 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
+#update it later
+# INSTALLED_APPS += ['corsheaders']
+# MIDDLEWARE += ['corsheaders.middleware.CorsMiddleware']
+
+# CORS_ALLOWED_ORIGINS = [
+#     "https://your-frontend-domain.com",
+# ]
