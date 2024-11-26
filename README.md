@@ -6,7 +6,11 @@
 # How to run -
 * install django 
  - pip install django
- * download the requirements 
+* If you are using a virtual environment, ensure that it is activated:
+ - .\venv\Scripts\activate <!--  On Windows -->
+ - source venv/bin/activate  <!-- On macOS/Linux -->
+* download the requirements 
  - pip install -r requirements.txt
- * Run  
+* Run  
  - python manage.py runserver
+ 
